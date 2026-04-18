@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Mini Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            width: 850px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: white;
+            font-size: 15px;
+        }
+
+        .tabs button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .active-tab {
+            background: rgba(0,188,212,0.4) !important;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .active {
+            display: block;
+        }
+
+        button.main {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+        }
+
+        input {
+            padding: 10px;
+            margin: 8px;
+            border-radius: 8px;
+            border: none;
+            width: 180px;
+            text-align: center;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="active-tab" onclick="showTab('btn', this)">Button</button>
+        <button onclick="showTab('alert', this)">Greeting</button>
+        <button onclick="showTab('calc', this)">Calculator</button>
+    </div>
+
+    <!-- BUTTON SECTION -->
+    <div id="btn" class="section active">
+        <h2>Dynamic Mood Button 🎨</h2>
+        <p>Enter a mood to change button color dynamically.</p>
+
+        <button class="main" id="myButton" onclick="changeColor()">
+            Set Mood
+        </button>
+
+        <div id="status">Status: Default Mode ⚪</div>
+    </div>
+
+    <!-- GREETING -->
+    <div id="alert" class="section">
+        <h2>Smart Greeting 👋</h2>
+
+        <button class="main" onclick="showGreeting()">
+            Show Greeting
+        </button>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div id="calc" class="section">
+        <h2>Simple Calculator ➕</h2>
+
+        <input type="number" id="n1" placeholder="First number">
+        <input type="number" id="n2" placeholder="Second number">
+
+        <br>
+
+        <button class="main" onclick="addNumbers()">Calculate</button>
+
+        <div class="result" id="res"></div>
+    </div>
+
+</div>
+
+<script>
+
+    // TAB SWITCH
+    function showTab(tabId, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active-tab'));
+        btn.classList.add('active-tab');
+    }
+
+    // 🎨 MOOD BUTTON (UPDATED)
+    function changeColor() {
+    let btn = document.getElementById("myButton");
+    let status = document.getElementById("status");
+
+    let mood = prompt("Enter mood: happy / calm / energetic / sad");
+
+    if (!mood) return;
+
+    mood = mood.toLowerCase().trim();
+
+    if (mood === "happy") {
+        btn.style.background = "linear-gradient(135deg, #ffeb3b, #ff9800)";
+        btn.innerText = "Happy Mood 😊";
+        status.innerText = "Status: Happy (Positive Energy)";
+    } 
+    else if (mood === "calm") {
+        btn.style.background = "linear-gradient(135deg, #00bcd4, #2196f3)";
+        btn.innerText = "Calm Mood 🌊";
+        status.innerText = "Status: Calm (Peaceful State)";
+    } 
+    else if (mood === "energetic") {
+        btn.style.background = "linear-gradient(135deg, #f44336, #ff5722)";
+        btn.innerText = "Energetic ⚡";
+        status.innerText = "Status: Energetic (High Energy)";
+    } 
+    else if (mood === "sad") {
+        btn.style.background = "linear-gradient(135deg, #37474f, #263238)";
+        btn.innerText = "Sad Mode 😔";
+        status.innerText = "Status: Feeling low / low energy state";
+    } 
+    else {
+        alert("Invalid mood! Use: happy, calm, energetic, sad");
+    }
+}
+
+    // GREETING
+    function showGreeting() {
+        let name = prompt("Enter your name:");
+
+        if (!name || name.trim() === "") {
+            name = "Friend";
+        }
+
+        let hour = new Date().getHours();
+        let msg = "";
+
+        if (hour < 12) {
+            msg = "Good Morning " + name + " ☀️";
+        } 
+        else if (hour < 18) {
+            msg = "Good Afternoon " + name + " 🌤️";
+        } 
+        else {
+            msg = "Good Evening " + name + " 🌙";
+        }
+
+        alert(msg);
+    }
+
+    // CALCULATOR
+    function addNumbers() {
+        let a = parseFloat(document.getElementById("n1").value);
+        let b = parseFloat(document.getElementById("n2").value);
+
+        document.getElementById("res").innerText =
+            isNaN(a) || isNaN(b)
+            ? "Please enter valid numbers!"
+            : "Result: " + (a + b);
+    }
+
+</script>
+
+</body>
+</html>
