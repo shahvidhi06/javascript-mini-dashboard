@@ -51,7 +51,7 @@ This project is a mini interactive dashboard that includes:
 ---
 
 ## 👩‍💻 Author
-Vidhi
+Vidhi Shah
 
 ---
 
